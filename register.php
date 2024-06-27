@@ -10,18 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    if (isset($_POST['smart-token'])) {
-        $captchaResponse = $_POST['smart-token'];
-    } else {
-        echo "Captcha token is missing.<br>";
-        exit();
-    }
-
-    if (!check_captcha($captchaResponse)) {
-        echo "Captcha validation failed.";
-        exit();
-    }
-
     if ($password != $confirm_password) {
         echo "Passwords do not match.";
         exit();
@@ -41,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
     <title>Register</title>
-    <script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
 </head>
 <body>
     <h1>Register</h1>
@@ -56,21 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="password" id="password" name="password" required><br>
         <label for="confirm_password">Confirm Password:</label>
         <input type="password" id="confirm_password" name="confirm_password" required><br>
-        <div
-            id="captcha-container"
-            class="smart-captcha"
-            data-sitekey="ysc1_Zdt9xwsbRBdSPRTKx79yGtN01M5z5WnLcxHGhLyt5d9b07dc"
-            style="height: 100px"
-        ></div>
         <input type="submit" value="Register">
     </form>
-    <script>
-        window.smartCaptcha.render('captcha-container', {
-            sitekey: 'ysc1_Zdt9xwsbRBdSPRTKx79yGtN01M5z5WnLcxHGhLyt5d9b07dc',
-            callback: function() {
-                console.log('Captcha widget rendered successfully');
-            }
-        });
-    </script>
 </body>
 </html>
