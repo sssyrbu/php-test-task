@@ -3,7 +3,7 @@
 require 'utils.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
+    $email_or_phone = $_POST['email_or_phone'];
     $password = $_POST['password'];
 
     if (isset($_POST['smart-token'])) {
@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    if (loginUser($email, $password)) {
+    if (loginUser($email_or_phone, $password)) {
         header('Location: profile.php');
         exit();
     } else {
-        echo "Invalid email or password.";
+        echo "Invalid email or phone, or password.";
     }
 }
 ?>
@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h1>Login</h1>
     <form method="post">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
+        <label for="email_or_phone">Email or Phone:</label>
+        <input type="text" id="email_or_phone" name="email_or_phone" required><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br>
         <div

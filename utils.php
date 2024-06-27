@@ -43,11 +43,17 @@ function registerUser($name, $email, $phone, $password) {
     $stmt->execute([$name, $email, $phone, $hashedPassword]);
 }
 
-function loginUser($email, $password) {
+function loginUser($email_or_phone, $password) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
+
+    $stmt = $pdo->prepare("
+        SELECT * FROM users WHERE email = ?
+        UNION
+        SELECT * FROM users WHERE phone = ?
+    ");
+    $stmt->execute([$email_or_phone, $email_or_phone]);
     $user = $stmt->fetch();
+
     if ($user && password_verify($password, $user['password'])) {
         session_start();
         $_SESSION['user_id'] = $user['id'];
